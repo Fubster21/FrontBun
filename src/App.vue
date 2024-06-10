@@ -1,17 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <AppNavbar />
+    <CategoriesMenu />
+    <div class="main-container">
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppNavbar from './components/AppNavbar.vue';
+import CategoriesMenu from './components/CategoriesMenu.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    AppNavbar,
+    CategoriesMenu,
+  },
+};
 </script>
 
 <style>
@@ -21,6 +28,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
