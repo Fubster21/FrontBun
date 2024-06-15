@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <AppNavbar />
-    <CategoriesMenu />
+    <CategoriesMenu @category-selected="handleCategorySelected" />
     <div class="main-container">
-      <router-view />
+      <router-view :selected-category="selectedCategory" />
     </div>
   </div>
 </template>
@@ -18,6 +18,20 @@ export default {
     AppNavbar,
     CategoriesMenu,
   },
+  data() {
+    return {
+      selectedCategory: null
+    };
+  },
+  methods: {
+    handleCategorySelected(categoryName) {
+      console.log('Handling selected category name in App:', categoryName);
+      this.selectedCategory = categoryName;
+      
+      // this.$router.push({name:'ProductCategory', params:{selectedCategoryId:categoryName}});
+      this.$router.push({ name: 'ProductPage', query: { selectedCategoryId: categoryName } });
+    }
+  }
 };
 </script>
 

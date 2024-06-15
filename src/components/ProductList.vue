@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
       <div class="product-list">
         <ProductCard v-for="product in filteredProducts" :key="product.id" :product="product" @add-to-cart="addToCart" />
@@ -55,4 +55,4 @@
     gap: 20px;
   }
   </style>
-  
+   -->

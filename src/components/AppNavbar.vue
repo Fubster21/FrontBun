@@ -19,15 +19,27 @@
         </div>
       </div>
       <ul class="navbar-menu">
-        <li><router-link to="/"><i class="fas fa-home"></i> <span class="menu-text">Products</span></router-link></li>
-        <li><router-link to="/cart"><i class="fas fa-shopping-cart"></i> <span class="menu-text">Cart</span></router-link></li>
-        <li><router-link to="/profile"><i class="fas fa-user"></i> <span class="menu-text">User Menu</span></router-link></li>
+        <li>
+          <router-link :to="profileLink"><i class="fas fa-user"></i> <span class="menu-text">My account</span></router-link>
+        </li>
+        <li>
+          <router-link to="/"><i class="fas fa-home"></i> <span class="menu-text">Products</span></router-link>
+        </li>
+        <li>
+          <router-link to="/cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="menu-text">Cart</span>
+            <span class="cart-count" v-if="cartItemCount > 0">{{ cartItemCount }}</span>
+          </router-link>
+        </li>
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
+import { store } from '../store.js';
+
 export default {
   name: 'AppNavbar',
   data() {
@@ -35,12 +47,23 @@ export default {
       searchQuery: ''
     };
   },
+  computed: {
+    cartItemCount() {
+      return store.cartItemCount;
+    },
+    isAuthenticated() {
+      return store.user != null;
+    },
+    profileLink() {
+      return this.isAuthenticated ? '/profile' : '/login';
+    }
+  },
   methods: {
     search() {
       this.$router.push({ path: '/', query: { search: this.searchQuery } });
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -64,6 +87,7 @@ nav {
   align-items: center;
 }
 .logo {
+  margin-left: 15px;
   width: 150px;
 }
 .navbar-center {
@@ -104,12 +128,15 @@ nav {
   list-style: none;
   display: flex;
   margin: 0;
+  padding-left: 10px;
 }
 .navbar-menu li {
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 20px;
+  position: relative;
 }
 .navbar-menu li a {
-  color: #333;
+  color: #007bff;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -120,6 +147,16 @@ nav {
 }
 .menu-text {
   display: inline;
+}
+.cart-count {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  position: absolute;
+  top: -10px;
+  left: 7px;
 }
 @media (max-width: 768px) {
   .menu-text {
