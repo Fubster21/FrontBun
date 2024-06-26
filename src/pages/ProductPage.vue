@@ -102,10 +102,10 @@ export default {
   },
   methods: {
     async fetchProducts() {
-      let url = 'http://localhost:8080/api/v1/products/all';
+      let url = 'http://165.227.161.107:8080/api/v1/products/all';
       if (this.$route.query.category !== undefined && this.$route.query.category !== null) {
         const categoryId = this.$route.query.category;
-        url = "http://localhost:8080/api/v1/products/category/" + categoryId;
+        url = "http://165.227.161.107:8080/api/v1/products/category/" + categoryId;
       }
       try {
         const response = await axios.get(url);
@@ -117,7 +117,7 @@ export default {
     },
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/categories/all');
+        const response = await axios.get('http://165.227.161.107:8080/api/v1/categories/all');
         this.categories = response.data;
         console.log('Fetched categories:', this.categories);
       } catch (error) {

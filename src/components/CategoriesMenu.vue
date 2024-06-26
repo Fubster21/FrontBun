@@ -44,7 +44,7 @@ export default {
     },
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/categories/all'); // TODO
+        const response = await axios.get('http://165.227.161.107:8080/api/v1/categories/all'); // TODO
         this.categories = response.data;
         console.log('Fetched categories:', this.categories);
       } catch (error) {

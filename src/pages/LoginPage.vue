@@ -33,7 +33,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post('http://localhost:8080/api/v1/auth/authenticate', {
+        const response = await axios.post('http://165.227.161.107:8080/api/v1/auth/authenticate', {
           username: this.username,
           password: this.password
         });
@@ -43,7 +43,7 @@ export default {
         store.storeToken(token);
         store.user = response.data.userId;
         store.role = response.data.role;
-        const response2 = await axios.get('http://localhost:8080/api/v1/users/' + store.user);
+        const response2 = await axios.get('http://165.227.161.107:8080/api/v1/users/' + store.user);
         
         
         console.log('USER DETAILS: ', response2);

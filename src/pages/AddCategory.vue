@@ -26,7 +26,7 @@
       async addCategory() {
         try {
           console.log('name: ', this.name);
-          await axios.post('http://localhost:8080/api/v1/categories/new', {
+          await axios.post('http://165.227.161.107:8080/api/v1/categories/new', {
             name: toRaw(this.name),
           });
           this.$router.push('/');

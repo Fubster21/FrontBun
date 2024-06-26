@@ -86,7 +86,7 @@
         console.log('Order data:', orderData);
   
         try {
-          const response = await axios.post('http://localhost:8080/api/v1/orders/new', orderData);
+          const response = await axios.post('http://165.227.161.107:8080/api/v1/orders/new', orderData);
           console.log('Order submitted:', response.data);
           this.resetForm();
           store.cartItems = [];

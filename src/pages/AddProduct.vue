@@ -66,7 +66,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/categories/all');
+      const response = await axios.get('http://165.227.161.107:8080/api/v1/categories/all');
       console.log('response.data: ', response.data)
       this.categories = response.data;
     } catch (error) {
@@ -86,7 +86,7 @@ export default {
       console.log('===== ADDING NEW PRODUCT =====');
       try {
         console.log('selectedCategories:', this.selectedCategories)
-        await axios.post('http://localhost:8080/api/v1/products/new', {
+        await axios.post('http://165.227.161.107:8080/api/v1/products/new', {
           name: this.name,
           description: this.description,
           color: this.color,

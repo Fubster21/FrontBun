@@ -49,14 +49,14 @@ export const store = reactive({
 
   async login(username, password) {
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/auth/authenticate', {
+      const response = await axios.post('http://165.227.161.107:8080/api/v1/auth/authenticate', {
         username,
         password
       });
       this.token = response.data.token;
       this.storeToken(this.token);
       this.user = response.data.userId;
-      const usersDetailsResponse = await axios.get('http://localhost:8080/api/v1/user/' + this.user);
+      const usersDetailsResponse = await axios.get('http://165.227.161.107:8080/api/v1/user/' + this.user);
       console.log('USER DETAILS RESPONSE: ', usersDetailsResponse);
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
       await this.fetchUser();
@@ -72,8 +72,8 @@ export const store = reactive({
         if (this.user === undefined || this.user === null) {
           return;
         }
-        console.log('http://localhost:8080/api/v1/user/' + this.user);
-        const response = await axios.get('http://localhost:8080/api/v1/user/' + this.user);
+        console.log('http://165.227.161.107:8080/api/v1/user/' + this.user);
+        const response = await axios.get('http://165.227.161.107:8080/api/v1/user/' + this.user);
         // this.user = response.data;
         // this.role = response.data.role;
         console.log('User object:', response);
