@@ -44,15 +44,22 @@ export default {
         store.user = response.data.userId;
         store.role = response.data.role;
         const response2 = await axios.get('http://localhost:8080/api/v1/users/' + store.user);
+        
+        
         console.log('USER DETAILS: ', response2);
         store.firstName = response2.data.firstName;
         store.lastName = response2.data.lastName;
+        store.address = response2.data.address;
+        store.phoneNumber = response2.data.phone;
+        // store.username = response2.data.
+
         const intendedRoute = localStorage.getItem('intendedRoute');
         if (intendedRoute) {
           localStorage.removeItem('intendedRoute');
           this.$router.push(intendedRoute);
         } else {
-          this.$router.push('/');
+          this.$router.push({ path: '/', query: { category: null } });
+          // this.$router.push('/');
         }
       } catch (error) {
         console.error('Error during login:', error);

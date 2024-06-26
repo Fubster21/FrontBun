@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
           <label for="phoneNumber">Phone Number:</label>
-          <input type="text" id="phoneNumber" v-model="user.phoneNumber" required>
+          <input type="text" id="phoneNumber" v-model="user.phone" required>
         </div>
         <div class="form-group">
           <label for="address">Address:</label>
@@ -43,7 +43,7 @@
           password: '',
           firstName: '',
           lastName: '',
-          phoneNumber: '',
+          phone: '',
           address: ''
         }
       };

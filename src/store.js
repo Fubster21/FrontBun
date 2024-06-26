@@ -10,6 +10,8 @@ export const store = reactive({
   isAuthenticated: false,
   firstName: null,
   lastName: null,
+  address: null,
+  phoneNumber: null,
 
   addToCart(product) {
     console.log("Adding product to cart:", product);
@@ -67,6 +69,9 @@ export const store = reactive({
   async fetchUser() {
     if (this.token) {
       try {
+        if (this.user === undefined || this.user === null) {
+          return;
+        }
         console.log('http://localhost:8080/api/v1/user/' + this.user);
         const response = await axios.get('http://localhost:8080/api/v1/user/' + this.user);
         // this.user = response.data;

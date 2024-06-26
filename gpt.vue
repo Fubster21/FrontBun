@@ -1,7 +1,7 @@
 <template>
   <div :class="['product-card', { 'out-of-stock': product.stockQuantity === 0 }]" @click="openModal">
     <div class="product-image-container">
-      <img :src="productImage" alt="Product Image" :class="imageStyle">
+      <img :src="productImage" alt="Product Image" class="product-image">
     </div>
     <div class="product-info">
       <h3>{{ product.name }}</h3>
@@ -30,13 +30,6 @@ export default {
   computed: {
     productImage() {
       return this.product.image ? `data:image/jpeg;base64,${this.product.image}` : 'path/to/default/image.jpg';
-    },
-    imageStyle() {
-      if (this.product.stockQuantity > 0) {
-        return "product-image"
-      } else {
-        return "product-image-gray"
-      }
     }
   },
   methods: {
@@ -76,12 +69,6 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.product-image-gray {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%)
 }
 .product-info {
   margin-top: 0.5rem;

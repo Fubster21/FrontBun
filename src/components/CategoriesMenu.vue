@@ -44,7 +44,7 @@ export default {
     },
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/categories/all');
+        const response = await axios.get('http://localhost:8080/api/v1/categories/all'); // TODO
         this.categories = response.data;
         console.log('Fetched categories:', this.categories);
       } catch (error) {
@@ -52,8 +52,13 @@ export default {
       }
     },
     selectCategory(categoryId) {
-      console.log('Selected category ID:', categoryId);
-      this.$emit('category-selected', categoryId);
+      if (categoryId === null) {
+        this.$router.push('/');
+      }
+      else {
+        console.log('Selected category ID:', categoryId);
+        this.$router.push({ path: '/', query: { category: categoryId } });
+      }
       this.closeMenu();
     },
     goToAddCategory() {
@@ -137,7 +142,7 @@ nav {
   color: white;
 }
 .add-category-btn {
-  background: linear-gradient(90deg, #ff7e5f 0%, #feb47b 100%);
+  background: linear-gradient(90deg, #c60000 0%, #cd8c13 100%);
   border: none;
   color: white;
   padding: 10px 20px;

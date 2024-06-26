@@ -155,7 +155,7 @@ select {
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  background: linear-gradient(90deg, #c60000 0%, #cd8c13 100%);
   margin-top: 10px;
 }
 .error-message {

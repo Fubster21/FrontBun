@@ -2,13 +2,13 @@
   <div class="profile-container">
     <h1>My Profile</h1>
     <div class="profile-details" v-if="user">
-      <p><strong>Username:</strong> {{ user.username }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>First Name:</strong> {{ user.firstName }}</p>
-      <p><strong>Last Name:</strong> {{ user.lastName }}</p>
-      <p><strong>Phone Number:</strong> {{ user.phoneNumber }}</p>
-      <p><strong>Address:</strong> {{ user.address }}</p>
-      <p><strong>Role:</strong> {{ user.role }}</p>
+      <!-- <p><strong>Username:</strong> {{ firstname }}</p> -->
+      <!-- <p><strong>Email:</strong> {{ user.email }}</p> -->
+      <p><strong>First Name:</strong> {{ firstname }}</p>
+      <p><strong>Last Name:</strong> {{ lastname }}</p>
+      <p><strong>Phone Number:</strong> {{ phone }}</p>
+      <p><strong>Address:</strong> {{ address }}</p>
+      <!-- <p><strong>Role:</strong> {{ user.role }}</p> -->
     </div>
     <div v-else>
       <p>Loading...</p>
@@ -24,7 +24,22 @@ export default {
   name: 'ProfilePage',
   computed: {
     user() {
+      console.log("STORE.USER = ", store.user);
+      
       return store.user;
+    },
+    firstname() {
+      console.log("STORE.FIRSTNAME = ", store.firstName);
+      return store.firstName;
+    },
+    lastname() {
+      return store.lastName;
+    },
+    phone() {
+      return store.phoneNumber;
+    },
+    address() {
+      return store.address;
     }
   },
   methods: {

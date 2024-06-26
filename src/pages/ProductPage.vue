@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h1>Products</h1>
-    <button class="add-new-product-btn" v-if="isAdminOrSupplier" @click="goToAddProduct">Add a New Product</button>
+    <h1>{{ pageTitle }}</h1>
+    <button class="add-new-product-btn" 
+      v-if="isAdminOrSupplier" 
+      @click="goToAddProduct">Add a New Product</button>
     <div class="product-list">
       <ProductCard
         v-for="product in filteredProducts"
         :key="product.id"
         :product="product"
-        @click="openModal(product)"
+        @click="product.stockQuantity > 0 && openModal(product)"
       />
     </div>
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
@@ -44,16 +46,10 @@ export default {
   components: {
     ProductCard
   },
-  // props: {
-  //   selectedCategoryId: {
-  //     type: [String, Number],
-  //     default: null
-  //   }
-  // },
-  props: (route) => ({ selectedCategoryId: route.query.selectedCategoryId }) ,
   data() {
     return {
       products: [],
+      categories: [], // Add categories array here
       showModal: false,
       selectedProduct: null,
       selectedQuantity: 1
@@ -64,30 +60,68 @@ export default {
       return store.role === 'ADMIN' || store.role === 'SUPPLIER';
     },
     filteredProducts() {
-      console.log('Filtering products by category ID:', this.selectedCategoryId);
-      if (this.selectedCategoryId) {
+      const categoryId = this.$route.query.category;
+      if (categoryId) {
         return this.products.filter(product =>
-          product.categories.some(category => category.id == this.selectedCategoryId)
+          product.categories.some(category => category.id == categoryId)
         );
       }
-      return this.products;
+      let searchQuery = this.$route.query.search || '';
+      let prodList = this.products.filter(product => 
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        .sort((a, b) => {
+          if (a.stockQuantity == 0 && b.stockQuantity > 0) {
+            // console.log("Sorting: ", a.stockQuantity, " comes after ", b.stockQuantity);
+            return 1; // a should come after b
+          } else if (a.stockQuantity > 0 && b.stockQuantity == 0) {
+            // console.log("Sorting: ", a.stockQuantity, " comes before ", b.stockQuantity);
+            return -1; // a should come before b
+          } else {
+            // console.log("Sorting: ", a.stockQuantity, " == ", b.stockQuantity);
+            return 0; // a and b are equal in terms of stockQuantity
+          }
+        });
+      
+      // console.log("Product list: ", prodList);
+      return prodList;
     },
     totalAmount() {
       return this.selectedQuantity * this.selectedProduct.price;
+    },
+    categoryName() {
+      const categoryId = this.$route.query.category;
+      if (categoryId && this.categories.length) {
+        const category = this.categories.find(category => category.id == categoryId);
+        return category ? category.name : 'Products';
+      }
+      return 'Products';
+    },
+    pageTitle() {
+      return this.categoryName || 'Products';
     }
   },
   methods: {
     async fetchProducts() {
       let url = 'http://localhost:8080/api/v1/products/all';
-      if (this.selectedCategoryId) {
-        url = `http://localhost:8080/api/v1/products/category/${this.selectedCategoryId}`;
+      if (this.$route.query.category !== undefined && this.$route.query.category !== null) {
+        const categoryId = this.$route.query.category;
+        url = "http://localhost:8080/api/v1/products/category/" + categoryId;
       }
       try {
         const response = await axios.get(url);
         this.products = response.data;
         console.log('Fetched products:', this.products);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        // console.error('Error fetching products:', error);
+      }
+    },
+    async fetchCategories() {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/categories/all');
+        this.categories = response.data;
+        console.log('Fetched categories:', this.categories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
       }
     },
     goToAddProduct() {
@@ -122,16 +156,22 @@ export default {
     }
   },
   watch: {
-    selectedCategoryId: {
+    '$route.query.search': {
       immediate: true,
-      handler(newVal) {
-        console.log('Category ID changed to:', newVal);
+      handler() {
+        this.fetchProducts();
+      }
+    },
+    '$route.query.category': {
+      immediate: true,
+      handler() {
         this.fetchProducts();
       }
     }
   },
   created() {
     this.fetchProducts();
+    this.fetchCategories(); // Fetch categories on component creation
   }
 };
 </script>

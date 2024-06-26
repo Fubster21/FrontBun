@@ -1,7 +1,7 @@
 <template>
   <div :class="['product-card', { 'out-of-stock': product.stockQuantity === 0 }]" @click="openModal">
     <div class="product-image-container">
-      <img :src="productImage" alt="Product Image" :class="imageStyle">
+      <img :src="product.stockQuantity > 0 ? productImage : grayscaleProductImage" alt="Product Image" class="product-image">
     </div>
     <div class="product-info">
       <h3>{{ product.name }}</h3>
@@ -31,12 +31,8 @@ export default {
     productImage() {
       return this.product.image ? `data:image/jpeg;base64,${this.product.image}` : 'path/to/default/image.jpg';
     },
-    imageStyle() {
-      if (this.product.stockQuantity > 0) {
-        return "product-image"
-      } else {
-        return "product-image-gray"
-      }
+    grayscaleProductImage() {
+      return this.product.image ? this.toGrayscale(`data:image/jpeg;base64,${this.product.image}`) : 'path/to/default/image.jpg';
     }
   },
   methods: {
@@ -45,6 +41,32 @@ export default {
     },
     openModal() {
       this.$emit('click', this.product);
+    },
+    toGrayscale(base64Image) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      return new Promise((resolve) => {
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+
+          for (let i = 0; i < data.length; i += 4) {
+            const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            data[i] = avg;
+            data[i + 1] = avg;
+            data[i + 2] = avg;
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+          resolve(canvas.toDataURL());
+        };
+        img.src = base64Image;
+      });
     }
   }
 };
@@ -76,12 +98,6 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.product-image-gray {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%)
 }
 .product-info {
   margin-top: 0.5rem;

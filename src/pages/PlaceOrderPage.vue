@@ -62,10 +62,10 @@
     methods: {
       fillUserData() {
         if (store.user) {
-          this.firstName = store.user.firstName || '';
-          this.lastName = store.user.lastName || '';
-          this.address = store.user.address || '';
-          this.phone = store.user.phone || '';
+          this.firstName = store.firstName || '';
+          this.lastName = store.lastName || '';
+          this.address = store.address || '';
+          this.phone = store.phone || '';
         }
       },
       async submitOrder() {
@@ -149,7 +149,7 @@
     padding: 10px;
     cursor: pointer;
     border-radius: 5px;
-    background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+    background: linear-gradient(90deg, #c60000 0%, #cd8c13 100%);
     margin-top: 10px;
   }
   .total-amount {
